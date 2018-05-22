@@ -21,13 +21,15 @@ if(!empty($_POST)) {
     if (empty($contenu)) {
         $membre1 = $_SESSION['membre']['id_membre'];
         $membre2 = $_GET['id_membre'];
-        executeReq("INSERT INTO note (note, avis, date_enregistrement, membre_id1, membre_id2) VALUES (:note, :avis, NOW(), :membre_id1, :membre_id2)", 
-                        array(':note'  		=> $_POST['note'],
-                              ':avis'       => $_POST['avis'],
-                              ':membre_id1' => $membre1,
-                              ':membre_id2' => $membre2
-                        ));
-                        $contenu .= '<div class="bg-success">Votre avis a bien été enregistré. Retournez sur le <a href="profil_membre.php?id_membre='. $membre2 .'">profil du membre.</a></div>';
+       executeRequete("INSERT INTO note (membre_id1, membre_id2, note, avis, date_enregistrement) VALUES(:membre_id1, :membre_id2, :note, :avis, NOW())",
+                   array (':membre_id1' => $_SESSION['membre']['id_membre'],
+                          ':membre_id2' => $membre_actuel['id_membre'],
+                          ':note' => $_POST['note'],
+                          ':avis' => $_POST['avis']
+                         ));
+
+    $contenu .= '<div class="bg-success"> Votre note a bien été enregistrée !</div>';
+
 	}
 
 }
